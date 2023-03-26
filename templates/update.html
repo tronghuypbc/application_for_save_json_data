@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Update Alpaca {% endblock %}</h1>
+    <div class="split-left left">
+        <table id="data" class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Instruction</th>
+                <th>Input</th>
+                <th>Output</th>
+                <th>Created</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ alpaca.id }}</td>
+                <td>{{ alpaca.instruction }}</td>
+                <td>{{ alpaca.input }}</td>
+                <td>{{ alpaca.output }}</td>
+                <td>{{ alpaca.created }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="split-right right">
+        <form method="post">
+            <div class="form-group">
+                <label for="title">Instruction</label>
+                <input type="text" name="instruction" placeholder="Update Instruction"
+                       class="form-control"
+                       value="{{ request.form['instruction'] or alpaca['instruction'] }}"></input>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Input</label>
+                <input type="text" name="input" placeholder="Update Input"
+                       class="form-control"
+                       value="{{ request.form['input'] or alpaca['input'] }}"></input>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Output</label>
+                <input type="text" name="output" placeholder="Update Output"
+                       class="form-control"
+                       value="{{ request.form['output'] or alpaca['output'] }}"></input>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
+

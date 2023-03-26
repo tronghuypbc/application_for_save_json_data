@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Create a New Alpaca {% endblock %}</h1>
+    <div class="split-left left">
+        <table id="data" class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Instruction</th>
+                <th>Input</th>
+                <th>Output</th>
+                <th>Created</th>
+                <th>Delete</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for alpaca in alpacas %}
+                <tr>
+                    <td>{{ alpaca.id }}</td>
+                    <td>{{ alpaca.instruction }}</td>
+                    <td>{{ alpaca.input }}</td>
+                    <td>{{ alpaca.output }}</td>
+                    <td>{{ alpaca.created }}</td>
+                    <td>
+                        <form action="{{ url_for('delete', id=alpaca.id) }}" method="POST">
+                            <input class="btn btn-primary" type="submit" value="Delete"
+                                   onclick="return confirm('Are you sure you want to delete this alpaca?')">
+                        </form>
+                    </td>
+                    <td>
+                        <button type="edit" onclick="window.location.href='{{ url_for('update', id=alpaca.id) }}';"
+                                class="btn btn-primary">Edit
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    <div class="split-right right">
+        <form method="post">
+            <div class="form-group">
+                <label for="title">Instruction</label>
+                <input type="text" name="instruction"
+                       placeholder="Post instruction" class="form-control"
+                       value="{{ request.form['instruction'] }}"></input>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Input</label>
+                <input type="text" name="input"
+                       placeholder="Post input" class="form-control"
+                       value="{{ request.form['input'] }}"></input>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Output</label>
+                <input type="text" name="output"
+                       placeholder="Post output" class="form-control"
+                       value="{{ request.form['output'] }}"></input>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
+
+
+{% endblock %}

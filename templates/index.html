@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table id="data" class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Instruction</th>
+            <th>Input</th>
+            <th>Output</th>
+            <th>Created</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for alpaca in alpacas %}
+            <tr>
+                <td>{{ alpaca.id }}</td>
+                <td>{{ alpaca.instruction }}</td>
+                <td>{{ alpaca.input }}</td>
+                <td>{{ alpaca.input }}</td>
+                <td>{{ alpaca.created }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
