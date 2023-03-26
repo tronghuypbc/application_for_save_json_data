@@ -51,7 +51,7 @@ def export_data_to_json_file():
     cur = con.cursor()
     cur.execute("SELECT * FROM alpacas")
 
-    col_names = [cn[0] for cn in cur.description if cn[0] not in ['id', 'created']]
+    col_names = [cn[0] for cn in cur.description]
 
     json = ''
     json += "[\n"
@@ -61,6 +61,8 @@ def export_data_to_json_file():
             break
         json += '\t{\n'
         for j, col in enumerate(col_names):
+            if col in ['id', 'created']:
+                continue
             last = j == (len(col_names) - 1)
             json += output_json_object(col, item[j], last)
 
