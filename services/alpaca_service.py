@@ -1,7 +1,7 @@
-from flask import abort, flash
-from datetime import datetime
+from flask import abort
 from storages.alpaca_database import get_db_connection
 from helpers.alpaca_helper import output_json_object
+from sqlalchemy import create_engine
 
 
 def create_alpaca(instruction, input_val, output):
@@ -46,22 +46,26 @@ def delete_alpaca(alpaca_id):
     conn.close()
 
 
-def export_data_to_json_file():
-    con = get_db_connection()
-    cur = con.cursor()
-    cur.execute("SELECT * FROM alpacas")
+def export_data_to_json_file(user_info):
+    engine = create_engine("sqlite:///instance/database.db")
+    connection = engine.raw_connection()
+    cursor = connection.cursor()
+    if user_info.get('user_role') == 'admin':
+        cursor.execute('SELECT * FROM alpaca')
+    else:
+        cursor.execute('SELECT * FROM alpaca WHERE created_by = ?', (user_info.get('user_id'),))
 
-    col_names = [cn[0] for cn in cur.description]
+    col_names = [cn[0] for cn in cursor.description]
 
     json = ''
     json += "[\n"
-    items = cur.fetchall()
+    items = cursor.fetchall()
     for i, item in enumerate(items):
         if item == None:
             break
         json += '\t{\n'
         for j, col in enumerate(col_names):
-            if col in ['id', 'created']:
+            if col in ['id', 'created', 'created_by']:
                 continue
             last = j == (len(col_names) - 1)
             json += output_json_object(col, item[j], last)
@@ -73,5 +77,5 @@ def export_data_to_json_file():
             json += '\t}\n'
 
     json += "]"
-    cur.close()
+    cursor.close()
     return json
