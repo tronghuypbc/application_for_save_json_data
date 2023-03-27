@@ -12,7 +12,7 @@ app.app_context().push()
 
 class Alpaca(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    instruction = db.Column(db.String(100), unique=True)
+    instruction = db.Column(db.String(100))
     input = db.Column(db.String(100))
     output = db.Column(db.String(100))
     created = db.Column(db.DateTime, default=datetime.utcnow)
